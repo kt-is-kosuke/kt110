@@ -1,42 +1,97 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おしゃれな写真</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .photo {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .caption {
-            text-align: center;
-            margin-top: 10px;
-            color: #666;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クイズゲーム</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 {
+        margin-top: 50px;
+    }
+    #question {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+    #choices {
+        margin-top: 20px;
+    }
+    .choice-button {
+        font-size: 18px;
+        margin: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .choice-button:hover {
+        background-color: #e0e0e0;
+    }
+</style>
 </head>
 <body>
+    <h1>クイズゲーム</h1>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <p id="result"></p>
 
-<div class="container">
-    <img class="photo" src="https://embed.pixiv.net/spotlight.php?id=3044&lang=ja" alt="きれいな写真">
-    <p class="caption">おしゃれな写真のキャプション</p>
-</div>
+    <script>
+        var currentQuestionIndex = 0;
+        var score = 0;
 
+        var questions = [
+            {
+                question: "次のうち、最も大きい数は？",
+                choices: ["10", "5", "7", "12"],
+                correctAnswer: "12"
+            },
+            {
+                question: "首都が東京の国は？",
+                choices: ["中国", "韓国", "日本", "タイ"],
+                correctAnswer: "日本"
+            },
+            {
+                question: "次のうち、果物ではないものは？",
+                choices: ["りんご", "バナナ", "トマト", "みかん"],
+                correctAnswer: "トマト"
+            }
+        ];
+
+        function displayQuestion() {
+            var currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").innerText = currentQuestion.question;
+
+            var choicesHTML = "";
+            currentQuestion.choices.forEach(function(choice) {
+                choicesHTML += '<button class="choice-button" onclick="checkAnswer(\'' + choice + '\')">' + choice + '</button>';
+            });
+            document.getElementById("choices").innerHTML = choicesHTML;
+        }
+
+        function checkAnswer(userChoice) {
+            var currentQuestion = questions[currentQuestionIndex];
+            if (userChoice === currentQuestion.correctAnswer) {
+                score++;
+                document.getElementById("result").innerText = "正解！";
+            } else {
+                document.getElementById("result").innerText = "残念、不正解です。正解は「" + currentQuestion.correctAnswer + "」でした。";
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                document.getElementById("question").innerText = "クイズ終了！";
+                document.getElementById("choices").innerHTML = "";
+                document.getElementById("result").innerText += " スコア: " + score + "/" + questions.length;
+            }
+        }
+
+        displayQuestion();
+    </script>
 </body>
 </html>
